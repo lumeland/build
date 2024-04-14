@@ -1,0 +1,25 @@
+name: Lume Build
+description: Build a site using the Lume static site generator
+inputs:
+  task:
+    description: Deno task to build the site
+    required: false
+    default: build
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Deno
+      uses: denoland/setup-deno@v1
+      with:
+        deno-version: v1.x
+    - name: Cache Deno dependencies
+      uses: actions/cache@4
+      with:
+        path: |
+          ${{ env.DENO_DIR }}
+          _cache
+        key: ${{ runner.os }}-deno-
+    - name: Run build task
+      shell: bash
+      run: |
+        deno task ${{ inputs.cmd }}
