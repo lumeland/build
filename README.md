@@ -16,7 +16,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - uses: lumeland/build@main
+    - uses: lumeland/build@v1
 ```
 
 By default runs `deno task build` command. To configure a different command:
@@ -24,7 +24,7 @@ By default runs `deno task build` command. To configure a different command:
 ```yml
 steps:
 - uses: actions/checkout@v4
-- uses: lumeland/build@main
+- uses: lumeland/build@v1
   with:
     cmd: deno task build --location=https://example.com
 ```
