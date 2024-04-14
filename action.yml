@@ -1,10 +1,10 @@
 name: Lume Build
 description: Build a site using the Lume static site generator
 inputs:
-  task:
-    description: Deno task to build the site
+  cmd:
+    description: Command to build the site
     required: false
-    default: build
+    default: deno task build
 runs:
   using: "composite"
   steps:
@@ -22,4 +22,4 @@ runs:
     - name: Run build task
       shell: bash
       run: |
-        deno task ${{ inputs.cmd }}
+        ${{ inputs.cmd }}
