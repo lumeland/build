@@ -16,10 +16,12 @@ runs:
       uses: actions/cache@v4
       with:
         path: |
-          ${{ env.DENO_DIR }}
+          _deno_cache
           _cache
         key: ${{ runner.os }}-deno-
     - name: Run build task
       shell: bash
+      env:
+        DENO_DIR: _deno_cache
       run: |
         ${{ inputs.cmd }}
