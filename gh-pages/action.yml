@@ -40,10 +40,10 @@ runs:
           if [ -f CNAME ]; then
             LOCATION=$(cat CNAME)
           else
-            if [[ "${{ github.repository_name }}" == *".github.io" ]]; then
-              LOCATION="https://${{ github.repository_name }}"
+            if [[ $GITHUB_REPOSITORY_NAME == *".github.io" ]]; then
+              LOCATION="https://$GITHUB_REPOSITORY_NAME"
             else
-              LOCATION="https://${{ github.repository_owner }}.github.io/${{ github.repository_name }}"
+              LOCATION="https://$GITHUB_REPOSITORY_OWNER.github.io/$GITHUB_REPOSITORY_NAME"
             fi
           fi
         else
