@@ -1,0 +1,69 @@
+name: Build GitHub Page with Lume
+description: Build and publish a site using the Lume static site generator on GitHub Pages
+
+branding:
+  icon: book-open
+  color: white
+
+inputs:
+  cmd:
+    description: Command to build the site
+    required: false
+    default: deno task build
+  location:
+    description: Public URL for the site. By default is calculated automatically.
+    required: false
+    default: auto
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Deno
+      uses: denoland/setup-deno@v1
+      with:
+        deno-version: v1.x
+
+    - name: Cache Deno dependencies
+      uses: actions/cache@v4
+      with:
+        path: |
+          _deno_cache
+          _cache
+        key: ${{ runner.os }}-deno-
+
+    - name: Run build task
+      shell: bash
+      env:
+      DENO_DIR: _deno_cache
+      run: |
+        if [[ ${{ inputs.location }} == "auto" ]]; then
+          if [ -f CNAME ]; then
+            LOCATION=$(cat CNAME)
+          else
+            if [[ "${{ github.repository_name }}" == *".github.io" ]]; then
+              LOCATION="https://${{ github.repository_name }}"
+            else
+              LOCATION="https://${{ github.repository_owner }}.github.io/${{ github.repository_name }}"
+            fi
+          fi
+        else
+          LOCATION=${{ inputs.location }}
+        fi
+
+        if [[ -n $LOCATION ]]; then
+          ${{ inputs.cmd }} --dest=_site --location=$LOCATION
+        else
+          ${{ inputs.cmd }} --dest=_site
+        fi
+
+    - name: Setup Pages
+      uses: actions/configure-pages@v3
+    
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v2
+      with:
+        path: '_site'
+
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v1
