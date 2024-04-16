@@ -1,4 +1,4 @@
-name: Build GitHub Page with Lume
+name: Build GitHub Pages with Lume
 description: Build and publish a site using the Lume static site generator on GitHub Pages
 
 branding:
@@ -34,7 +34,7 @@ runs:
     - name: Run build task
       shell: bash
       env:
-      DENO_DIR: _deno_cache
+        DENO_DIR: _deno_cache
       run: |
         if [[ ${{ inputs.location }} == "auto" ]]; then
           if [ -f CNAME ]; then
