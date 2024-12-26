@@ -6,6 +6,10 @@ branding:
   color: white
 
 inputs:
+  deno-version:
+    description: The Deno version to install. See GH action: denoland/setup-deno
+    required: false
+    default: v1.x
   cmd:
     description: Command to build the site
     required: false
@@ -21,7 +25,7 @@ runs:
     - name: Setup Deno
       uses: denoland/setup-deno@v1
       with:
-        deno-version: v1.x
+        deno-version: ${{ inputs.deno-version }}
 
     - name: Cache Deno dependencies
       uses: actions/cache@v4
