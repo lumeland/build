@@ -31,21 +31,17 @@ runs:
           _cache
         key: ${{ runner.os }}-deno-
 
+    - name: Setup Pages
+      id: setup-pages
+      uses: actions/configure-pages@v5
+
     - name: Run build task
       shell: bash
       env:
         DENO_DIR: _deno_cache
       run: |
         if [[ ${{ inputs.location }} == "auto" ]]; then
-          if [ -f CNAME ]; then
-            LOCATION=$(cat CNAME)
-          else
-            if [[ ${{ github.event.repository.name }} == *".github.io" ]]; then
-              LOCATION="https://${{ github.event.repository.name }}"
-            else
-              LOCATION="https://$GITHUB_REPOSITORY_OWNER.github.io/${{ github.event.repository.name }}"
-            fi
-          fi
+          LOCATION=${{ steps.setup-pages.outputs.base_url }}
         else
           LOCATION=${{ inputs.location }}
         fi
@@ -56,9 +52,6 @@ runs:
           ${{ inputs.cmd }} --dest=_site
         fi
 
-    - name: Setup Pages
-      uses: actions/configure-pages@v3
-    
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v2
       with:
