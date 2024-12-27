@@ -9,7 +9,7 @@ inputs:
   deno-version:
     description: The Deno version to install.
     required: false
-    default: v1.x
+    default: v2.x
   cmd:
     description: Command to build the site
     required: false
@@ -23,7 +23,7 @@ runs:
   using: "composite"
   steps:
     - name: Setup Deno
-      uses: denoland/setup-deno@v1
+      uses: denoland/setup-deno@v2
       with:
         deno-version: ${{ inputs.deno-version }}
 
